@@ -1,5 +1,6 @@
 import arcade 
 from models import World
+from random import randint
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 1200
 class ModelSprite(arcade.Sprite):
@@ -17,14 +18,20 @@ class ModelSprite(arcade.Sprite):
         super().draw()
 
 class NinninWindow(arcade.Window):
+    SLEEP = 0.5
     def __init__(self,width,height):
         super().__init__(width,height)
         self.background = None
+        self.wait_time = 0
+        self.rand = 0
         arcade.set_background_color(arcade.color.AMAZON)
         self.background = arcade.load_texture("images/background.png")
         self.world = World(width,height)
         self.ninja = ModelSprite('images/char1.png',model = self.world.ninja)
         self.barrel = ModelSprite('images/item1.png',model = self.world.barrel)
+        self.shuriken = ModelSprite('Images/item2.png',model = self.world.shuriken1)
+        self.barrel2 = ModelSprite('images/item1.png',model = self.world.barrel2)
+        self.shuriken2 = ModelSprite('Images/item2.png',model = self.world.shuriken2)
     def on_key_press(self, key, key_modifiers):
         self.world.on_key_press(key, key_modifiers)
     def update(self,delta):
@@ -34,6 +41,10 @@ class NinninWindow(arcade.Window):
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2,SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
         self.ninja.draw()
         self.barrel.draw()
+        self.shuriken.draw()
+        self.barrel2.draw()
+        self.shuriken2.draw()
+
 
 if __name__ == '__main__':
     window =NinninWindow(SCREEN_WIDTH,SCREEN_HEIGHT)
