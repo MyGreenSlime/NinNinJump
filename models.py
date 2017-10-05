@@ -25,26 +25,27 @@ class Ninja:
             self.move = 1
 class Item():
     def __init__(self,world,x,y):
-        self.rand = randint(0,1)
+        self.rand = randint(0,2)
         self.pos = [568,32]
         self.x = -100
-        self.y = 1200
-        self.speed = randint(7,10)
+        self.y = 1000
+        self.speed = [7,10]
+        self.move = self.speed[randint(0,1)]
     def random_location(self):
-        self.rand = randint(0,1)
-        if self.rand ==1:
+        self.rand = randint(0,2)
+        if self.rand ==0:
             self.x = self.pos[randint(0,1)]
         else:
             self.x =-100
-        self.y = 1200
-        self.speed = randint(7,10)
+        self.y = 1000
+        self.move = self.speed[randint(0,1)]
     def update(self,delta):
-        self.y-=self.speed
+        self.y-=self.move
 class World:
     def __init__(self,width,height):
         self.width = width
         self.height  =height
-        self.ninja = Ninja(self,568,300)
+        self.ninja = Ninja(self,568,100)
         self.barrel = Item(self,0,0)
         self.shuriken1 = Item(self,0,0)
         self.barrel2 = Item(self,0,0)
@@ -56,7 +57,7 @@ class World:
         self.ninja.update(delta)    
         self.barrel.update(delta)
         self.shuriken1.update(delta)
-        self.barrel2.update(delta)
+        self.barrel2.update(delta)  
         self.shuriken2.update(delta)
         if(self.barrel.y<0):
             self.barrel.random_location()

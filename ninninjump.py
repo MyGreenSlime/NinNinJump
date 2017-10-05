@@ -2,7 +2,7 @@ import arcade
 from models import World
 from random import randint
 SCREEN_WIDTH = 600
-SCREEN_HEIGHT = 1200
+SCREEN_HEIGHT = 1000
 class ModelSprite(arcade.Sprite):
     def __init__(self, *args, **kwargs):
         self.model = kwargs.pop('model', None)
