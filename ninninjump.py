@@ -31,7 +31,7 @@ class NinninWindow(arcade.Window):
         self.barrel = ModelSprite('images/item1.png',model = self.world.barrel)
         self.shuriken = ModelSprite('Images/item2.png',model = self.world.shuriken1)
         self.barrel2 = ModelSprite('images/item1.png',model = self.world.barrel2)
-        self.shuriken2 = ModelSprite('Images/item2.png',model = self.world.shuriken2)
+        
     def on_key_press(self, key, key_modifiers):
         self.world.on_key_press(key, key_modifiers)
     def update(self,delta):
@@ -43,7 +43,6 @@ class NinninWindow(arcade.Window):
         self.barrel.draw()
         self.shuriken.draw()
         self.barrel2.draw()
-        self.shuriken2.draw()
 
 
 if __name__ == '__main__':

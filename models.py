@@ -10,9 +10,9 @@ class Ninja:
         self.vx = 0
     def direction(self):
         if self.move == 0:
-            self.vx = -16
+            self.vx = -20
         elif self.move == 1:
-            self.vx = 16
+            self.vx = 20
     def update(self,delta):
         self.x+=self.vx
         if(abs(600-self.x)<=32):
@@ -25,23 +25,29 @@ class Ninja:
             self.move = 1
 class Item():
     def __init__(self,world,x,y):
-        self.rand = randint(0,2)
-        self.pos = [568,32]
         self.x = -100
         self.y = 1000
-        self.speed = [7,10]
-        self.move = self.speed[randint(0,1)]
+        self.posx = [32,568] 
+        self.move = [9,10]
+        self.speed = self.move[randint(0,1)]
+        self.sleep = 0
     def random_location(self):
-        self.rand = randint(0,2)
-        if self.rand ==0:
-            self.x = self.pos[randint(0,1)]
+        '''while(self.sleep<=1000):
+            self.sleep+=1'''
+        self.rand = randint(0,1)
+        if(self.rand == 0):
+            self.x = self.posx[randint(0,1)]
         else:
-            self.x =-100
+            self.x = -100
         self.y = 1000
-        self.move = self.speed[randint(0,1)]
+        self.speed = self.move[randint(0,1)]
+        self.sleep = 0
+    def cancel(self):
+        self.x  = -100
     def update(self,delta):
-        self.y-=self.move
+        self.y -= self.speed
 class World:
+    TIMEDELAY = 0.5
     def __init__(self,width,height):
         self.width = width
         self.height  =height
@@ -49,22 +55,55 @@ class World:
         self.barrel = Item(self,0,0)
         self.shuriken1 = Item(self,0,0)
         self.barrel2 = Item(self,0,0)
-        self.shuriken2 = Item(self,0,0)
+        self.time = 0
+        self.check =0
+        self.item1 = [self.barrel,self.shuriken1,self.barrel2]
     def on_key_press(self, key, key_modifiers):
         if key == arcade.key.SPACE:
             self.ninja.direction()
     def update(self,delta):
+        self.time += delta
         self.ninja.update(delta)    
         self.barrel.update(delta)
         self.shuriken1.update(delta)
         self.barrel2.update(delta)  
-        self.shuriken2.update(delta)
-        if(self.barrel.y<0):
-            self.barrel.random_location()
-        if(self.shuriken1.y <0):
-            self.shuriken1.random_location()
-        if(self.barrel2.y<0):
-            self.barrel2.random_location()
-        if(self.shuriken2.y <0):
-            self.shuriken2.random_location()    
+        if(self.time>World.TIMEDELAY):
+            for i in self.item1:
+                if(i.y<0):
+                    i.random_location()
+                    if(i.rand == 0):
+                        self.check+=1
+            '''if(self.barrel.y<0):
+                self.barrel.random_location()
+                if(self.barrel.rand == 0):
+                    self.check +=1
+            if(self.shuriken1.y <0):
+                self.shuriken1.random_location()
+                if(self.shuriken1.rand == 0):
+                    self.check +=1
+            if(self.barrel2.y<0):
+                self.barrel2.random_location()
+                if(self.barrel2.rand == 0):
+                    self.check+=1'''
+            print(self.check)
+            if(self.check == 2):
+                print("in2")
+                for i in self.item1:
+                    xx =0
+                    for k in self.item1:
+                        if(i != k):
+                            if(i.rand == 0 and k.rand == 0):
+                                xx = 1  
+                                i.cancel()
+                                #k.cancel()
+                                break
+                    if(xx == 1):
+                        break
+            elif(self.check==3):
+                print("in3")
+                self.barrel.cancel()
+                self.barrel2.cancel()
+                self.shuriken1.cancel()
+            self.check = 0
+            self.time = 0    
         
