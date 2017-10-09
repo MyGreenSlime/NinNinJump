@@ -43,6 +43,9 @@ class NinninWindow(arcade.Window):
         self.barrel.draw()
         self.shuriken.draw()
         self.barrel2.draw()
+        arcade.draw_text(str(self.world.score),
+                         self.width - 325, self.height - 30,
+                         arcade.color.BLACK, 20)
 
 
 if __name__ == '__main__':
