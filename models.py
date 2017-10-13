@@ -46,7 +46,7 @@ class Item():
             self.x = self.posx[randint(0,1)]
         else:
             self.x = -100
-        self.y = randint(1200,1220)
+        self.y = 1200
         self.speed = self.move[randint(0,1)]
         self.sleep = 0
     def cancel(self):
@@ -58,7 +58,7 @@ class Item():
             self.y -= self.speed
 class World:
     TIMEDELAY = 0.1
-    TIMECHAGE = 0.05
+    TIMECHANGE = 0.05
     def __init__(self,width,height):
         self.width = width
         self.height  =height
@@ -76,10 +76,10 @@ class World:
     def on_key_press(self, key, key_modifiers):
         if key == arcade.key.SPACE:
             self.ninja.direction()
-            self.flip+=1
-            self.flip%=2
+            if(self.ninja.x==32 or self.ninja.x==568):
+                self.flip+=1
+                self.flip%=2
     def update(self,delta):
-        #print(self.addscore)
         self.score += self.addscore
         self.time += delta
         self.timepic += delta
@@ -87,35 +87,17 @@ class World:
         self.barrel.update(delta)
         self.shuriken1.update(delta)
         self.knife.update(delta)
-        if(self.time>World.TIMEDELAY):
-            for i in self.item1:
-                if(i.y<0):
-                    i.random_location()
-                    if(i.rand == 0):
-                        self.check+=1
-                        if(self.check == 2):
-                            #print("in2")
-                            for i in self.item1:
-                                xx =0
-                                for k in self.item1:
-                                    if(i != k):
-                                        if(i.rand == 0 and k.rand == 0):
-                                            xx = 1  
-                                            i.cancel()
-                                            #k.cancel()
-                                            break
-                                if(xx == 1):
-                                    break
-            self.check = 0
-            self.time = 0
-        if(self.timepic>=World.TIMECHAGE):
+        j = 0
+        timeset = [1.1,1.9,2.5]
+        for i in self.item1:
+            if(i.y<0 and self.time%3 >=timeset[j]):
+                i.random_location()
+            j+=1
+        if(self.timepic>=World.TIMECHANGE):
             self.ninja.pic+=1
-            self.ninja.pic%=6  
-            print(self.ninja.pic) 
+            self.ninja.pic%=6   
             self.timepic = 0         
         for i in self.item1:
-            #print("in")
-            if(self.ninja.onhit(i,50,80)==True):
-                print("hit")
+            if(self.ninja.onhit(i,50,70)==True):
                 self.addscore = 0
                 break  
