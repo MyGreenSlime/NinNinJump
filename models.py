@@ -8,6 +8,7 @@ class Ninja:
         self.y = y
         self.move = 0
         self.vx = 0
+        self.pic = 0
     def direction(self):
         if self.move == 0:
             self.vx = -22
@@ -57,6 +58,7 @@ class Item():
             self.y -= self.speed
 class World:
     TIMEDELAY = 0.1
+    TIMECHAGE = 0.05
     def __init__(self,width,height):
         self.width = width
         self.height  =height
@@ -65,21 +67,26 @@ class World:
         self.ninja = Ninja(self,568,100)
         self.barrel = Item(self,0,0)
         self.shuriken1 = Item(self,0,0)
-        self.barrel2 = Item(self,0,0)
+        self.knife = Item(self,0,0)
         self.time = 0
-        self.check =0#
-        self.item1 = [self.barrel,self.shuriken1,self.barrel2]
+        self.timepic = 0
+        self.check =0
+        self.item1 = [self.barrel,self.shuriken1,self.knife]
+        self.flip = 0
     def on_key_press(self, key, key_modifiers):
         if key == arcade.key.SPACE:
             self.ninja.direction()
+            self.flip+=1
+            self.flip%=2
     def update(self,delta):
         #print(self.addscore)
         self.score += self.addscore
         self.time += delta
+        self.timepic += delta
         self.ninja.update(delta)    
         self.barrel.update(delta)
         self.shuriken1.update(delta)
-        self.barrel2.update(delta)
+        self.knife.update(delta)
         if(self.time>World.TIMEDELAY):
             for i in self.item1:
                 if(i.y<0):
@@ -100,7 +107,12 @@ class World:
                                 if(xx == 1):
                                     break
             self.check = 0
-            self.time = 0  
+            self.time = 0
+        if(self.timepic>=World.TIMECHAGE):
+            self.ninja.pic+=1
+            self.ninja.pic%=6  
+            print(self.ninja.pic) 
+            self.timepic = 0         
         for i in self.item1:
             #print("in")
             if(self.ninja.onhit(i,50,80)==True):
