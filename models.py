@@ -30,8 +30,22 @@ class Ninja:
             self.x = 32
             self.vx = 0
             self.move = 1
-class Item():
+class Sheild():
     TIMEDELAY = 0.2
+    def __init__(self,world,x,y):
+        self.x = x
+        self.y = y
+        self.posx = -100
+        self.posy = -100
+    def cancel(self):
+        self.posx  = -100
+    def position(self,x,y):
+        self.posx = x
+        self.posy = y
+    def update(self,delta):
+        self.x = self.posx
+        self.y = self.posy
+class Item():
     def __init__(self,world,x,y):
         self.x = -100
         self.y = randint(1200,1220)
@@ -40,9 +54,9 @@ class Item():
         self.speed = self.move[randint(0,1)]
         self.sleep = 0
         self.time= 0
-    def random_location(self):
+    def random_location(self,range1,range2):
         self.time = 0
-        self.rand = randint(0,1)
+        self.rand = randint(range1,range2)
         if(self.rand == 0):
             self.x = self.posx[randint(0,1)]
         else:
@@ -55,9 +69,6 @@ class Item():
     def setspeed(self,A,B):
         self.move = [A,B]
     def update(self,delta):
-        if(self.time<Item.TIMEDELAY):
-            self.time+=delta
-        else :
             self.y -= self.speed
 class World:
     TIMEDELAY = 0.1
@@ -68,9 +79,11 @@ class World:
         self.addscore = 1
         self.score = 0
         self.ninja = Ninja(self,568,100)
+        self.sheild = Sheild(self,568,100)
         self.barrel = Item(self,0,0)
         self.shuriken1 = Item(self,0,0)
         self.knife = Item(self,0,0)
+        self.gensheild = Item(self,0,0)
         self.time = 0
         self.timepic = 0
         self.check =0
@@ -79,6 +92,7 @@ class World:
         self.limitscore = 2500
         self.speeditem1 =11
         self.speeditem2 =12
+        self.live = 1
     def on_key_press(self, key, key_modifiers):
         if key == arcade.key.SPACE:
             self.ninja.direction()
@@ -90,11 +104,21 @@ class World:
         self.time += delta
         self.timepic += delta
         self.ninja.update(delta)
+        self.gensheild.update(delta)
+        if(self.gensheild.y<0):
+            self.gensheild.random_location(0,20)
+        if(self.live == 2):
+            if(self.flip==1):
+                self.sheild.position(self.ninja.x+15,self.ninja.y)
+            else: 
+                self.sheild.position(self.ninja.x-15,self.ninja.y)
+        self.sheild.update(delta)
         for i in self.item1:
             i.update(delta)
         if(self.score>=self.limitscore):
             for i in self.item1:
                 i.setspeed(self.speeditem1,self.speeditem2)
+            self.gensheild.setspeed(self.speeditem1,self.speeditem2)
             self.speeditem1+=2
             self.speeditem2+=2
             self.limitscore+=2500
@@ -103,7 +127,7 @@ class World:
         timeset = [0.5,1.5,2.5,3.5]
         for i in self.item1:
             if(i.y<0 and (self.time%3 >=timeset[j] and self.time%3<=timeset[j]+0.75)):
-                i.random_location()
+                i.random_location(0,1)
             j+=1
         if(self.timepic>=World.TIMECHANGE):
             self.ninja.pic+=1
@@ -111,5 +135,14 @@ class World:
             self.timepic = 0   
         for i in self.item1:
             if(self.ninja.onhit(i,50,70)==True):
-                self.addscore = 0
-                break  
+                self.live-=1
+                if(self.live == 1):
+                    self.sheild.cancel()
+                    i.cancel()
+                elif(self.live == 0):
+                    self.addscore =0
+                break 
+        if(self.ninja.onhit(self.gensheild,50,70)==True):
+            self.gensheild.cancel()
+            if(self.live<=1):
+                self.live+=1
