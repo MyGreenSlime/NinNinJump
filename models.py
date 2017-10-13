@@ -71,8 +71,7 @@ class Item():
     def update(self,delta):
             self.y -= self.speed
 class World:
-    TIMEDELAY = 0.1
-    TIMECHANGE = 0.05
+    TIMECHANGE = 0.075
     def __init__(self,width,height):
         self.width = width
         self.height  =height
@@ -106,7 +105,7 @@ class World:
         self.ninja.update(delta)
         self.gensheild.update(delta)
         if(self.gensheild.y<0):
-            self.gensheild.random_location(0,20)
+            self.gensheild.random_location(0,15)
         if(self.live == 2):
             if(self.flip==1):
                 self.sheild.position(self.ninja.x+15,self.ninja.y)
@@ -126,7 +125,7 @@ class World:
         j = 0
         timeset = [0.5,1.5,2.5,3.5]
         for i in self.item1:
-            if(i.y<0 and (self.time%3 >=timeset[j] and self.time%3<=timeset[j]+0.75)):
+            if(i.y<0 and (self.time%3 >=timeset[j] and self.time%3<=timeset[j]+1.25)):
                 i.random_location(0,1)
             j+=1
         if(self.timepic>=World.TIMECHANGE):
