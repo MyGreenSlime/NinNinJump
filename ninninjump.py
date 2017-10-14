@@ -35,15 +35,27 @@ class NinninWindow(arcade.Window):
         self.sheild = ModelSprite(self.setsheild[0],model = self.world.sheild)
         self.gensheild = ModelSprite('images/item4.png',model = self.world.gensheild)
         self.barrel = ModelSprite('images/item1.png',model = self.world.barrel)
+        self.barrel2 = ModelSprite('images/item1.png',model = self.world.barrel2)
         self.shuriken = ModelSprite('Images/item2.png',model = self.world.shuriken1)
         self.knife = ModelSprite('images/item3.png',model = self.world.knife)
+        self.textscore = self.ReadScore()
         
+    def ReadScore(self):
+        file = open("highscore.txt","r")
+        return file.read()
+    def WriteScore(self):
+        file = open("highscore.txt","w")
+        file.write(str(self.world.score))
+        file.close()
     def on_key_press(self, key, key_modifiers):
         self.world.on_key_press(key, key_modifiers)
     def update(self,delta):
         self.world.update(delta)
         self.ninja = ModelSprite(self.setninja[self.world.flip][self.world.ninja.pic],model = self.world.ninja)
         self.sheild = ModelSprite(self.setsheild[self.world.flip],model = self.world.sheild)
+        self.textscore = self.ReadScore()
+        if(self.world.score>int(self.textscore)):
+            self.WriteScore()
     def on_draw(self):
         arcade.start_render()
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2,SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
@@ -53,9 +65,10 @@ class NinninWindow(arcade.Window):
         self.barrel.draw()
         self.shuriken.draw()
         self.knife.draw()
-        arcade.draw_text(str(self.world.score),
-                         self.width - 325, self.height - 30,
-                         arcade.color.BLACK, 20)
+        self.barrel2.draw()
+        arcade.draw_text(str(self.world.score),self.width - 330, self.height - 80,arcade.color.BLACK, 20)
+        arcade.draw_text(str("HighScore: "+self.textscore),self.width - 400, self.height - 30,arcade.color.BLACK, 30)
+        
 
 
 if __name__ == '__main__':

@@ -83,10 +83,11 @@ class World:
         self.shuriken1 = Item(self,0,0)
         self.knife = Item(self,0,0)
         self.gensheild = Item(self,0,0)
+        self.barrel2 = Item(self,0,0)
         self.time = 0
         self.timepic = 0
         self.check =0
-        self.item1 = [self.barrel,self.shuriken1,self.knife]
+        self.item1 = [self.barrel,self.shuriken1,self.knife,self.barrel2]
         self.flip = 0
         self.limitscore = 2500
         self.speeditem1 =11
@@ -123,9 +124,9 @@ class World:
             self.limitscore+=2500
             self.ninja.speed+=2
         j = 0
-        timeset = [0.5,1.5,2.5,3.5]
+        timeset = [0.5,1.5,2.5,3.5,4.5]
         for i in self.item1:
-            if(i.y<0 and (self.time%3 >=timeset[j] and self.time%3<=timeset[j]+1.25)):
+            if(i.y<0 and (self.time%4 >=timeset[j] and self.time%4<=timeset[j]+1.25)):
                 i.random_location(0,1)
             j+=1
         if(self.timepic>=World.TIMECHANGE):
