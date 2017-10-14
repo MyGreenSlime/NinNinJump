@@ -80,8 +80,9 @@ class NinninWindow(arcade.Window):
         arcade.draw_text(str(self.world.score),self.width - 330, self.height - 80,arcade.color.BLUE, 20)
         arcade.draw_text(str("HighScore: "+self.textscore),self.width - 400, self.height - 30,arcade.color.BLUE, 30)
     def drawgameover(self):
-        arcade.draw_text(str("HighScore: "+self.textscore),self.width - 400, self.height - 500,arcade.color.BLUE, 30)
-        arcade.draw_text(str("YourScore: "+str(self.world.score)),self.width - 350, self.height -550,arcade.color.BLUE, 20)
+        arcade.draw_text(str("Press Any KEY To Restart"),self.width-565, self.height - 400,arcade.color.BLUE, 40)
+        arcade.draw_text(str("HighScore: "+self.textscore),self.width - 420, self.height - 450,arcade.color.BLUE, 30)
+        arcade.draw_text(str("YourScore: "+str(self.world.score)),self.width - 380, self.height -500,arcade.color.BLUE, 20)
     def on_draw(self):
         arcade.start_render()
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2,SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
