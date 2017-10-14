@@ -6,6 +6,7 @@ class Ninja:
         self.world = world
         self.x = x
         self.y = y
+        self.angel = 0
         self.move = 0
         self.vx = 0
         self.pic = 0
@@ -35,6 +36,7 @@ class Sheild():
     def __init__(self,world,x,y):
         self.x = x
         self.y = y
+        self.angel = 0
         self.posx = -100
         self.posy = -100
     def cancel(self):
@@ -49,6 +51,7 @@ class Item():
     def __init__(self,world,x,y):
         self.x = -100
         self.y = randint(1200,1220)
+        self.angel = 0
         self.posx = [32,568] 
         self.move = [9,10]
         self.speed = self.move[randint(0,1)]
