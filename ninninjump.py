@@ -39,7 +39,16 @@ class NinninWindow(arcade.Window):
         self.shuriken = ModelSprite('Images/item2.png',model = self.world.shuriken1)
         self.knife = ModelSprite('images/item3.png',model = self.world.knife)
         self.textscore = self.ReadScore()
-        
+    def setup(self):
+        self.world = World(SCREEN_WIDTH,SCREEN_HEIGHT)
+        self.ninja = ModelSprite(self.setninja[0][0],model = self.world.ninja)
+        self.sheild = ModelSprite(self.setsheild[0],model = self.world.sheild)
+        self.gensheild = ModelSprite('images/item4.png',model = self.world.gensheild)
+        self.barrel = ModelSprite('images/item1.png',model = self.world.barrel)
+        self.barrel2 = ModelSprite('images/item1.png',model = self.world.barrel2)
+        self.shuriken = ModelSprite('Images/item2.png',model = self.world.shuriken1)
+        self.knife = ModelSprite('images/item3.png',model = self.world.knife)
+        self.textscore = self.ReadScore()    
     def ReadScore(self):
         file = open("highscore.txt","r")
         return file.read()
@@ -50,9 +59,8 @@ class NinninWindow(arcade.Window):
     def on_key_press(self, key, key_modifiers):
         if(self.world.ninja.status == 1):
             self.world.on_key_press(key, key_modifiers)
-        elif(self.world.ninja,stauts == 0):
-            self.world = World(width,height)
-            
+        elif(self.world.ninja.status == 0):
+            self.setup()
     def update(self,delta):
         if(self.world.ninja.status == 1):
             self.world.update(delta)
