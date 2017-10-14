@@ -50,15 +50,14 @@ class NinninWindow(arcade.Window):
     def on_key_press(self, key, key_modifiers):
         self.world.on_key_press(key, key_modifiers)
     def update(self,delta):
-        self.world.update(delta)
-        self.ninja = ModelSprite(self.setninja[self.world.flip][self.world.ninja.pic],model = self.world.ninja)
-        self.sheild = ModelSprite(self.setsheild[self.world.flip],model = self.world.sheild)
-        self.textscore = self.ReadScore()
-        if(self.world.score>int(self.textscore)):
-            self.WriteScore()
-    def on_draw(self):
-        arcade.start_render()
-        arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2,SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
+        if(self.world.ninja.status == 1):
+            self.world.update(delta)
+            self.ninja = ModelSprite(self.setninja[self.world.flip][self.world.ninja.pic],model = self.world.ninja)
+            self.sheild = ModelSprite(self.setsheild[self.world.flip],model = self.world.sheild)
+            self.textscore = self.ReadScore()
+            if(self.world.score>int(self.textscore)):
+                self.WriteScore()
+    def drawgameplay(self):
         self.ninja.draw()
         self.sheild.draw()
         self.gensheild.draw()
@@ -66,8 +65,18 @@ class NinninWindow(arcade.Window):
         self.shuriken.draw()
         self.knife.draw()
         self.barrel2.draw()
-        arcade.draw_text(str(self.world.score),self.width - 330, self.height - 80,arcade.color.BLACK, 20)
-        arcade.draw_text(str("HighScore: "+self.textscore),self.width - 400, self.height - 30,arcade.color.BLACK, 30)
+        arcade.draw_text(str(self.world.score),self.width - 330, self.height - 80,arcade.color.BLUE, 20)
+        arcade.draw_text(str("HighScore: "+self.textscore),self.width - 400, self.height - 30,arcade.color.BLUE, 30)
+    def drawgameover(self):
+        arcade.draw_text(str("HighScore: "+self.textscore),self.width - 400, self.height - 500,arcade.color.BLUE, 30)
+        arcade.draw_text(str("YourScore: "+str(self.world.score)),self.width - 350, self.height -550,arcade.color.BLUE, 20)
+    def on_draw(self):
+        arcade.start_render()
+        arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2,SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
+        if(self.world.ninja.status == 1):
+            self.drawgameplay()
+        elif(self.world.ninja.status == 0):
+            self.drawgameover()
         
 
 

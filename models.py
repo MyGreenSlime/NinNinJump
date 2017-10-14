@@ -2,15 +2,17 @@ import arcade.key
 from random import randint
 
 class Ninja:
-    def __init__(self,world,x,y):
+    def __init__(self,world,x,y,angle):
         self.world = world
         self.x = x
         self.y = y
-        self.angel = 0
+        self.angle = 0
         self.move = 0
         self.vx = 0
+        self.vy =0
         self.pic = 0
         self.speed =22
+        self.status = 1
     def direction(self):
         if self.move == 0:
             self.vx = -self.speed
@@ -21,22 +23,27 @@ class Ninja:
             return True
         else: 
             False
+    def Die(self):
+        self.vy =-10
     def update(self,delta):
+        self.y+=self.vy
         self.x+=self.vx
+        if(self.y<0):
+            self.status = 0
         if(abs(600-self.x)<=32):
             self.x = 568
             self.vx = 0
             self.move = 0
-        if(abs(600-self.x)>=568):
+        elif(abs(600-self.x)>=568):
             self.x = 32
             self.vx = 0
             self.move = 1
 class Sheild():
     TIMEDELAY = 0.2
-    def __init__(self,world,x,y):
+    def __init__(self,world,x,y,angle):
         self.x = x
         self.y = y
-        self.angel = 0
+        self.angle = 0        
         self.posx = -100
         self.posy = -100
     def cancel(self):
@@ -48,10 +55,10 @@ class Sheild():
         self.x = self.posx
         self.y = self.posy
 class Item():
-    def __init__(self,world,x,y):
+    def __init__(self,world,x,y,angle):
         self.x = -100
         self.y = randint(1200,1220)
-        self.angel = 0
+        self.angle = 0        
         self.posx = [32,568] 
         self.move = [9,10]
         self.speed = self.move[randint(0,1)]
@@ -80,13 +87,13 @@ class World:
         self.height  =height
         self.addscore = 1
         self.score = 0
-        self.ninja = Ninja(self,568,100)
-        self.sheild = Sheild(self,568,100)
-        self.barrel = Item(self,0,0)
-        self.shuriken1 = Item(self,0,0)
-        self.knife = Item(self,0,0)
-        self.gensheild = Item(self,0,0)
-        self.barrel2 = Item(self,0,0)
+        self.ninja = Ninja(self,568,100,0)
+        self.sheild = Sheild(self,568,100,0)
+        self.barrel = Item(self,0,0,0)
+        self.shuriken1 = Item(self,0,0,0)
+        self.knife = Item(self,0,0,0)
+        self.gensheild = Item(self,0,0,0)
+        self.barrel2 = Item(self,0,0,0)
         self.time = 0
         self.timepic = 0
         self.check =0
@@ -97,7 +104,7 @@ class World:
         self.speeditem2 =12
         self.live = 1
     def on_key_press(self, key, key_modifiers):
-        if key == arcade.key.SPACE:
+        if key == arcade.key.SPACE and self.live != 0:
             self.ninja.direction()
             if(self.ninja.x==32 or self.ninja.x==568):
                 self.flip+=1
@@ -143,6 +150,11 @@ class World:
                     self.sheild.cancel()
                     i.cancel()
                 elif(self.live == 0):
+                    if(self.flip == 0):
+                        self.ninja.angle = 90
+                    else:
+                        self.ninja.angle = -90
+                    self.ninja.Die()
                     self.addscore =0
                 break 
         if(self.ninja.onhit(self.gensheild,50,70)==True):
