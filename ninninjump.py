@@ -48,7 +48,11 @@ class NinninWindow(arcade.Window):
         file.write(str(self.world.score))
         file.close()
     def on_key_press(self, key, key_modifiers):
-        self.world.on_key_press(key, key_modifiers)
+        if(self.world.ninja.status == 1):
+            self.world.on_key_press(key, key_modifiers)
+        elif(self.world.ninja,stauts == 0):
+            self.world = World(width,height)
+            
     def update(self,delta):
         if(self.world.ninja.status == 1):
             self.world.update(delta)
