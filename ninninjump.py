@@ -77,10 +77,10 @@ class NinninWindow(arcade.Window):
         self.shuriken.draw()
         self.knife.draw()
         self.barrel2.draw()
-        arcade.draw_text(str(self.world.score),self.width - 330, self.height - 80,arcade.color.BLUE, 20)
-        arcade.draw_text(str("HighScore: "+self.textscore),self.width - 400, self.height - 30,arcade.color.BLUE, 30)
+        arcade.draw_text(str("Score: "+self.world.score),self.width - 380, self.height - 80,arcade.color.BLUE, 20)
+        arcade.draw_text(str("HighScore: "+self.textscore),self.width - 400, self.height - 30,arcade.color.RED, 30)
     def drawgameover(self):
-        arcade.draw_text(str("Press Any KEY To Restart"),self.width-340, self.height - 400,arcade.color.BLUE, 20)
+        arcade.draw_text(str("Press Any KEY To Restart"),self.width-340, self.height - 400,arcade.color.RED, 20)
         arcade.draw_text(str("HighScore: "+self.textscore),self.width - 280, self.height - 450,arcade.color.BLUE, 15)
         arcade.draw_text(str("YourScore: "+str(self.world.score)),self.width - 270, self.height -500,arcade.color.BLUE, 15)
     def on_draw(self):
