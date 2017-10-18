@@ -30,11 +30,11 @@ class Ninja:
         self.x+=self.vx
         if(self.y<0):
             self.status = 0
-        if(abs(600-self.x)<=32):
-            self.x = 568
+        if(abs(400-self.x)<=32):
+            self.x = 368
             self.vx = 0
             self.move = 0
-        elif(abs(600-self.x)>=568):
+        elif(abs(400-self.x)>=368):
             self.x = 32
             self.vx = 0
             self.move = 1
@@ -57,10 +57,10 @@ class Sheild():
 class Item():
     def __init__(self,world,x,y,angle):
         self.x = -100
-        self.y = randint(1200,1220)
+        self.y = randint(1000,1020)
         self.angle = 0        
-        self.posx = [32,568] 
-        self.move = [9,10]
+        self.posx = [32,368] 
+        self.move = [10,10]
         self.speed = self.move[randint(0,1)]
         self.sleep = 0
         self.time= 0
@@ -71,7 +71,7 @@ class Item():
             self.x = self.posx[randint(0,1)]
         else:
             self.x = -100
-        self.y = 1200
+        self.y = randint(1000,1020)
         self.speed = self.move[randint(0,1)]
         self.sleep = 0
     def cancel(self):
@@ -87,8 +87,8 @@ class World:
         self.height  =height
         self.addscore = 1
         self.score = 0
-        self.ninja = Ninja(self,568,100,0)
-        self.sheild = Sheild(self,568,100,0)
+        self.ninja = Ninja(self,368,100,0)
+        self.sheild = Sheild(self,368,100,0)
         self.barrel = Item(self,0,0,0)
         self.shuriken1 = Item(self,0,0,0)
         self.knife = Item(self,0,0,0)
@@ -106,7 +106,7 @@ class World:
     def on_key_press(self, key, key_modifiers):
         if key == arcade.key.SPACE and self.live != 0:
             self.ninja.direction()
-            if(self.ninja.x==32 or self.ninja.x==568):
+            if(self.ninja.x==32 or self.ninja.x==368):
                 self.flip+=1
                 self.flip%=2
     def update(self,delta):
@@ -134,9 +134,9 @@ class World:
             self.limitscore+=2500
             self.ninja.speed+=2
         j = 0
-        timeset = [0.2,0.5,0.7,0.9,1.1]
+        timeset = [0.1,0.4,0.7,1,1.3]
         for i in self.item1:
-            if(i.y<0 and (self.time%1 >=timeset[j] and self.time%1<=timeset[j+1])):
+            if(i.y<0 and (self.time%2 >=timeset[j] and self.time%2<=timeset[j+1]-0.2)):
                 i.random_location(0,1)
             j+=1
         if(self.timepic>=World.TIMECHANGE):
