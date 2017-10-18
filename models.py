@@ -134,9 +134,9 @@ class World:
             self.limitscore+=2500
             self.ninja.speed+=2
         j = 0
-        timeset = [0.5,1.5,2.5,3.5,4.5]
+        timeset = [0.2,0.5,0.7,0.9,1.1]
         for i in self.item1:
-            if(i.y<0 and (self.time%4 >=timeset[j] and self.time%4<=timeset[j]+1.25)):
+            if(i.y<0 and (self.time%1 >=timeset[j] and self.time%1<=timeset[j+1])):
                 i.random_location(0,1)
             j+=1
         if(self.timepic>=World.TIMECHANGE):
